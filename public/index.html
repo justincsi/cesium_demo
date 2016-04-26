@@ -12,22 +12,59 @@
   <style>
       @import url(../Build/Cesium/Widgets/widgets.css);
       html, body, #cesiumContainer {
-          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
       }
   </style>
 </head>
 <body>
   <div id="cesiumContainer"></div>
+  <div id="loadinOverlay"></div>
+  <div id="toolbar">
+    <input style='background-color: red' type="button" id="test" value='Testing'/>
+  </div>
   <script>
-  var viewer = new Cesium.Viewer('cesiumContainer',{
-      clock: new Cesium.Clock({
-          startTime: new Cesium.JulianDate.fromDate(new Date()),
-          shouldAnimate: false,
-          currentTime: new Cesium.JulianDate.fromDate(new Date())
-        }),
-  });
-  viewer.dataSources.add(Cesium.CzmlDataSource.load('data/CA_stations.czml'));
-
+      var viewer = new Cesium.Viewer('cesiumContainer',{
+          clock: new Cesium.Clock({
+              startTime: new Cesium.JulianDate.fromDate(new Date()),
+              shouldAnimate: false,
+              currentTime: new Cesium.JulianDate.fromDate(new Date())
+            }),
+      });
+      viewer.dataSources.add(Cesium.CzmlDataSource.load('data/CA_stations.czml'));
+      var scene = viewer.scene;
+      var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+      handler.setInputAction(function(movement){
+        var picked = scene.pick(movement.position)
+        var pickedId = picked.id.id;
+        console.log(picked.primitive.position)
+      },Cesium.ScreenSpaceEventType.LEFT_CLICK);
+      // // Create a typical CzmlDataSource.
+      // var dataSource1 = new Cesium.CzmlDataSource();
+      // dataSource1.load('../../SampleData/simple.czml');
+      //
+      // // Add a checkbox at the top.
+      // document.getElementById('toolbar').innerHTML =
+      //     '<label><input type="checkbox" id="showCheckbox" /> Show CZML</label>';
+      //
+      // var checkbox = document.getElementById('showCheckbox');
+      // checkbox.addEventListener('change', function() {
+      //     // Checkbox state changed.
+      //     if (checkbox.checked) {
+      //         // Show if not shown.
+      //         if (!viewer.dataSources.contains(dataSource1)) {
+      //             viewer.dataSources.add(dataSource1);
+      //         }
+      //     } else {
+      //         // Hide if currently shown.
+      //         if (viewer.dataSources.contains(dataSource1)) {
+      //             viewer.dataSources.remove(dataSource1);
+      //         }
+      //     }
+      // }, false);
   </script>
 </body>
 </html>
