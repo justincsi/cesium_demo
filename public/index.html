@@ -8,7 +8,11 @@
   <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>Hello World!</title>
+  <link rel="stylesheet" href="css/metricsgraphics.css">
   <script src="../Build/CesiumUnminified/Cesium.js"></script>
+  <script src="js/vendor/axios.js"></script>
+  <script src="js/vendor/d3.v3.js"></script>
+  <script src="js/vendor/metricsgraphics.js"></script>
   <style>
       @import url(../Build/Cesium/Widgets/widgets.css);
       html, body, #cesiumContainer {
@@ -18,6 +22,33 @@
           padding: 0;
           overflow: hidden;
       }
+      #chart {
+      	display:block;
+      	position: absolute;
+      	top: 5px;
+      	left: 5px;
+      	background: white;
+      }
+      body {
+        font: 10px sans-serif;
+      }
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+
+      .x.axis path {
+        display: none;
+      }
+
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+      }
   </style>
 </head>
 <body>
@@ -26,45 +57,11 @@
   <div id="toolbar">
     <input style='background-color: red' type="button" id="test" value='Testing'/>
   </div>
-  <script>
-      var viewer = new Cesium.Viewer('cesiumContainer',{
-          clock: new Cesium.Clock({
-              startTime: new Cesium.JulianDate.fromDate(new Date()),
-              shouldAnimate: false,
-              currentTime: new Cesium.JulianDate.fromDate(new Date())
-            }),
-      });
-      viewer.dataSources.add(Cesium.CzmlDataSource.load('data/CA_stations.czml'));
-      var scene = viewer.scene;
-      var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-      handler.setInputAction(function(movement){
-        var picked = scene.pick(movement.position)
-        var pickedId = picked.id.id;
-        console.log(picked.primitive.position)
-      },Cesium.ScreenSpaceEventType.LEFT_CLICK);
-      // // Create a typical CzmlDataSource.
-      // var dataSource1 = new Cesium.CzmlDataSource();
-      // dataSource1.load('../../SampleData/simple.czml');
-      //
-      // // Add a checkbox at the top.
-      // document.getElementById('toolbar').innerHTML =
-      //     '<label><input type="checkbox" id="showCheckbox" /> Show CZML</label>';
-      //
-      // var checkbox = document.getElementById('showCheckbox');
-      // checkbox.addEventListener('change', function() {
-      //     // Checkbox state changed.
-      //     if (checkbox.checked) {
-      //         // Show if not shown.
-      //         if (!viewer.dataSources.contains(dataSource1)) {
-      //             viewer.dataSources.add(dataSource1);
-      //         }
-      //     } else {
-      //         // Hide if currently shown.
-      //         if (viewer.dataSources.contains(dataSource1)) {
-      //             viewer.dataSources.remove(dataSource1);
-      //         }
-      //     }
-      // }, false);
-  </script>
+
+  <div id="chart"></div>
+
+  <script src="js/api.service.js"></script>
+  <script src='js/graph.service.js'></script>
+  <script src='js/app.js'></script>
 </body>
 </html>
