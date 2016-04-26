@@ -11,23 +11,23 @@ var api = (function(){
   function update(lat, lon, param, start, end, units, aggregator){
       units = units || 'english';
       aggregator = aggregator || 'mean';
-      axios.get('/cfsr/daily', {
-        params: {
-          lat: lat,
-          lon: lon,
-          parameter: param,
-          start_date: getDateString(new Date(start)),
-          end_date: getDateString(new Date(end)),
-          units: units,
-          aggregator: aggregator
-        }
-      })
-      .then(function(response){
-        data = response.data;
-      })
-      .catch(function(err){
-        console.error(err);
-      })
+      return axios.get('/cfsr/daily', {
+                        params: {
+                          lat: lat,
+                          lon: lon,
+                          parameter: param,
+                          start_date: getDateString(new Date(start)),
+                          end_date: getDateString(new Date(end)),
+                          units: units,
+                          aggregator: aggregator
+                        }
+                      })
+                      .then(function(response){
+                        data = response.data;
+                      })
+                      .catch(function(err){
+                        console.error(err);
+                      })
   }
 
   function getDateString(date){
@@ -37,7 +37,6 @@ var api = (function(){
     var dateString = month + '/';
         dateString += day + '/';
         dateString += year;
-    console.log(dateString);
     return dateString;
   }
 })();

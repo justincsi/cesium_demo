@@ -12,20 +12,27 @@ function onLoad(){
     var scene = viewer.scene;
     var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(function(movement) {
+
         var cartesian = viewer.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);
         if (cartesian) {
             var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
             var lon = Cesium.Math.toDegrees(cartographic.longitude);
             var lat = Cesium.Math.toDegrees(cartographic.latitude);
-            console.log(lat, lon)
-            api.update(lat, lon, 'wndmag', new Date(), '2016-12-31');
+            api.update(lat, lon, 'tmpsfc', new Date(), '2016-12-31')
+                .then(function(data){
+                  graph.createSingleLineGraph('#chart', api.getData());
+                });
+
         } else {
             console.log('Point is undefined!')
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
 
-
+// document.getElementById('chart').addEventListener('click', hideMap);
+// function hideMap(){
+//   document.getElementById('chart').innerHTML = '';
+// }
 
 
 
