@@ -18,11 +18,16 @@ function onLoad(){
             var lon = Cesium.Math.toDegrees(cartographic.longitude);
             var lat = Cesium.Math.toDegrees(cartographic.latitude);
             console.log(lat, lon)
+            api.update(lat, lon, 'wndmag', new Date(), '2016-12-31');
         } else {
             console.log('Point is undefined!')
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
+
+
+
+
 
 
 // // Create a typical CzmlDataSource.
