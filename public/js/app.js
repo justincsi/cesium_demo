@@ -7,10 +7,6 @@ function onLoad(){
             shouldAnimate: false,
             currentTime: new Cesium.JulianDate.fromDate(new Date())
           }),
-        // terrainProvider : new Cesium.CesiumTerrainProvider({
-        //   url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
-        //   }),
-      // mapProjection : new Cesium.WebMercatorProjection(),
     });
     viewer.dataSources.add(Cesium.CzmlDataSource.load('data/CA_stations.czml'));
     var scene = viewer.scene;
@@ -18,12 +14,12 @@ function onLoad(){
     // scene.toolbar.add(cali);
     var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(function(movement) {
-
         var cartesian = viewer.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);
         if (cartesian) {
             var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
             var lon = Cesium.Math.toDegrees(cartographic.longitude);
             var lat = Cesium.Math.toDegrees(cartographic.latitude);
+            setPin(viewer, lat, lon, 'Current Position');
             api.getData(lat, lon, 'tmpsfc', new Date(), '2016-12-31')
                 .then(function(data){
                   graph.create('#chart', data);
@@ -41,22 +37,22 @@ function onLoad(){
       });
 
     });
-    // begin camera zoom
-
-    // var rectangle = Cesium.Rectangle.fromDegrees(-124.803705, 42.255220, -114.692549, 32.502367);
-    //
-    // viewer.camera.flyTo({
-    //     destination : rectangle
-    // });
-
-    // Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
-    // Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
-    // end camera zoom
-
-
 }
 
 document.getElementById('chart').addEventListener('click', hideMap);
 function hideMap(){
   document.getElementById('chart').innerHTML = '';
+}
+
+function setPin(viewer, lat, lon, description){
+  viewer.entities.removeAll();
+  var pinBuilder = new Cesium.PinBuilder();
+  var pin = viewer.entities.add({
+    name: description,
+    position: Cesium.Cartesian3.fromDegrees(lon, lat),
+    billboard: {
+      image: pinBuilder.fromColor(Cesium.Color.RED, 25).toDataURL(),
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+    }
+  });
 }
