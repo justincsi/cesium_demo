@@ -3,7 +3,7 @@ var server = express();
 var path = require('path');
 var axios = require('axios');
 
-var port = process.argv[2];
+var port = process.env.PORT || process.argv[2];
 server.use(express.static(path.join(__dirname,'public')));
 
 
