@@ -37,13 +37,14 @@ function onLoad(){
       });
 
     });
-}
 
-document.getElementById('chart').addEventListener('click', hideMap);
-function hideMap(){
-  document.getElementById('chart').innerHTML = '';
-}
 
+  document.getElementById('chart').addEventListener('click', hideMap);
+  function hideMap(){
+    document.getElementById('chart').innerHTML = '';
+    viewer.entities.removeAll();
+  }
+}
 function setPin(viewer, lat, lon, description){
   viewer.entities.removeAll();
   var pinBuilder = new Cesium.PinBuilder();
