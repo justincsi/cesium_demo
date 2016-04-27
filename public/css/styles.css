@@ -12,6 +12,18 @@
     font-size: 1.2rem !important;
   }
 
+  .cesium-infoBox {
+    height: 600px;
+  }
+
+  .cesium-infoBox-decription img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cesium-infoBox-iframe {
+    height: 100% !important;
+  }
   html, body, #cesiumContainer {
       width: 100%;
       height: 100%;
