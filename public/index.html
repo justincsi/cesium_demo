@@ -8,55 +8,24 @@
   <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <title>Hello World!</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
   <link rel="stylesheet" href="css/metricsgraphics.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script src="../Build/CesiumUnminified/Cesium.js"></script>
   <script src="js/vendor/axios.js"></script>
   <script src="js/vendor/d3.v3.js"></script>
   <script src="js/vendor/metricsgraphics.js"></script>
-  <style>
-      @import url(../Build/Cesium/Widgets/widgets.css);
-      html, body, #cesiumContainer {
-          width: 100%;
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-      }
-      #chart {
-      	display:block;
-      	position: absolute;
-      	top: 5px;
-      	left: 5px;
-      	background: white;
-      }
-      body {
-        font: 10px sans-serif;
-      }
-
-      .axis path,
-      .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-
-      .x.axis path {
-        display: none;
-      }
-
-      .line {
-        fill: none;
-        stroke: steelblue;
-        stroke-width: 1.5px;
-      }
-  </style>
 </head>
 <body>
   <div id="cesiumContainer"></div>
   <div id="loadinOverlay"></div>
   <div id="toolbar">
-    <input style='background-color: red' type="button" id="test" value='Testing'/>
-  </div>
+    <div class="forceVisible">
+      <button id="zoom" data-complete-text="Zoomed in" class="test btn btn-primary" type="button" autocomplete="off">
+        Zoom
+      </button>
+    </div>
 
   <div id="chart"></div>
 

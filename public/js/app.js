@@ -7,9 +7,15 @@ function onLoad(){
             shouldAnimate: false,
             currentTime: new Cesium.JulianDate.fromDate(new Date())
           }),
+        // terrainProvider : new Cesium.CesiumTerrainProvider({
+        //   url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+        //   }),
+      // mapProjection : new Cesium.WebMercatorProjection(),
     });
     viewer.dataSources.add(Cesium.CzmlDataSource.load('data/CA_stations.czml'));
     var scene = viewer.scene;
+    // var cali = new Cesium.HomeButtonViewModel(scene, 2);
+    // scene.toolbar.add(cali);
     var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(function(movement) {
 
@@ -27,6 +33,27 @@ function onLoad(){
             console.log('Point is undefined!')
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    document.querySelector('#zoom').addEventListener('click', function(){
+      var rectangle = Cesium.Rectangle.fromDegrees(-124.803705, 42.255220, -114.692549, 32.502367);
+
+      viewer.camera.flyTo({
+          destination : rectangle
+      });
+
+    });
+    // begin camera zoom
+
+    // var rectangle = Cesium.Rectangle.fromDegrees(-124.803705, 42.255220, -114.692549, 32.502367);
+    //
+    // viewer.camera.flyTo({
+    //     destination : rectangle
+    // });
+
+    // Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+    // Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
+    // end camera zoom
+
+
 }
 
 document.getElementById('chart').addEventListener('click', hideMap);
