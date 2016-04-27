@@ -12,12 +12,12 @@ function onLoad(){
     var scene = viewer.scene;
     var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
     handler.setInputAction(function(movement) {
-
         var cartesian = viewer.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);
         if (cartesian) {
             var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
             var lon = Cesium.Math.toDegrees(cartographic.longitude);
             var lat = Cesium.Math.toDegrees(cartographic.latitude);
+            setPin(viewer, lat, lon, 'Current Position');
             api.getData(lat, lon, 'tmpsfc', new Date(), '2016-12-31')
                 .then(function(data){
                   graph.create('#chart', data);
@@ -32,4 +32,17 @@ function onLoad(){
 document.getElementById('chart').addEventListener('click', hideMap);
 function hideMap(){
   document.getElementById('chart').innerHTML = '';
+}
+
+function setPin(viewer, lat, lon, description){
+  viewer.entities.removeAll();
+  var pinBuilder = new Cesium.PinBuilder();
+  var pin = viewer.entities.add({
+    name: description,
+    position: Cesium.Cartesian3.fromDegrees(lon, lat),
+    billboard: {
+      image: pinBuilder.fromColor(Cesium.Color.RED, 25).toDataURL(),
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+    }
+  });
 }
