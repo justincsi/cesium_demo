@@ -18,9 +18,9 @@ function onLoad(){
             var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
             var lon = Cesium.Math.toDegrees(cartographic.longitude);
             var lat = Cesium.Math.toDegrees(cartographic.latitude);
-            api.update(lat, lon, 'tmpsfc', new Date(), '2016-12-31')
+            api.getData(lat, lon, 'tmpsfc', new Date(), '2016-12-31')
                 .then(function(data){
-                  graph.createSingleLineGraph('#chart', api.getData());
+                  graph.create('#chart', data);
                 });
 
         } else {
@@ -29,34 +29,7 @@ function onLoad(){
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 }
 
-// document.getElementById('chart').addEventListener('click', hideMap);
-// function hideMap(){
-//   document.getElementById('chart').innerHTML = '';
-// }
-
-
-
-
-// // Create a typical CzmlDataSource.
-// var dataSource1 = new Cesium.CzmlDataSource();
-// dataSource1.load('../../SampleData/simple.czml');
-//
-// // Add a checkbox at the top.
-// document.getElementById('toolbar').innerHTML =
-//     '<label><input type="checkbox" id="showCheckbox" /> Show CZML</label>';
-//
-// var checkbox = document.getElementById('showCheckbox');
-// checkbox.addEventListener('change', function() {
-//     // Checkbox state changed.
-//     if (checkbox.checked) {
-//         // Show if not shown.
-//         if (!viewer.dataSources.contains(dataSource1)) {
-//             viewer.dataSources.add(dataSource1);
-//         }
-//     } else {
-//         // Hide if currently shown.
-//         if (viewer.dataSources.contains(dataSource1)) {
-//             viewer.dataSources.remove(dataSource1);
-//         }
-//     }
-// }, false);
+document.getElementById('chart').addEventListener('click', hideMap);
+function hideMap(){
+  document.getElementById('chart').innerHTML = '';
+}

@@ -6,11 +6,39 @@ var graph = (function(){
       'C': 'Temperature C'
     }
   };
+  var paramTitleLookUp = {
+    'tmpsfc': "Surface Temperature"
+  };
   return {
-    createSingleLineGraph: createSingleLineGraph
+    createSingleLineGraph: createSingleLineGraph,
+    create: create
   };
 
-
+  function create(selector, data){
+    document.querySelector(selector).innerHTML = '';
+    var cfs = data.cfs;
+    var cfsr = data.cfsr;
+    var parameter = cfs.parameter;
+    var units = cfs.units;
+    var yLabel = paramDescriptionLookUp[parameter][units];
+    var cfsGraphData = parseData(cfs.start_date, cfs.end_date, cfs.param_values);
+    var cfsrGraphData = parseData(cfsr.start_date, cfsr.end_date, cfsr.param_values);
+    MG.data_graphic({
+      title: paramTitleLookUp[parameter],
+      target: selector,
+      data: [cfsGraphData, cfsrGraphData],
+      width: 600,
+      height: 400,
+      right: 40,
+      left: 75,
+      area: false,
+      legend: ['CFS', 'CFSR'],
+      x_label: "Dates",
+      y_label: yLabel,
+      aggregate_rollover: true,
+      animate_on_load: true
+    });
+  }
 
   function createSingleLineGraph(selector, data){
     document.querySelector(selector).innerHTML = '';
@@ -32,6 +60,7 @@ var graph = (function(){
 
     });
   }
+
 
   function parseData(startDate, endDate, values){
     var dateRange = getDateRange(startDate, endDate);
