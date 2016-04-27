@@ -24,7 +24,7 @@ var graph = (function(){
     var cfsGraphData = parseData(cfs.start_date, cfs.end_date, cfs.param_values);
     var cfsrGraphData = parseData(cfsr.start_date, cfsr.end_date, cfsr.param_values);
     MG.data_graphic({
-      title: paramTitleLookUp[parameter],
+      title: positionString(cfs.lat, cfs.lon,paramTitleLookUp[parameter]),
       target: selector,
       data: [cfsGraphData, cfsrGraphData],
       width: 600,
@@ -74,6 +74,23 @@ var graph = (function(){
     return newData;
   }
 
+  function formatLonString(lon){
+    return lon < 0 ? {lon: (Math.abs(+lon)).toFixed(2), dir: 'W'}:{lon:(Math.abs(+lon)).toFixed(2), dir: 'E'}
+  }
+  function formatLatString(lat){
+    return lat < 0 ? {lat: (Math.abs(+lat)).toFixed(2), dir: 'S'}:{lat:(Math.abs(+lat)).toFixed(2), dir: 'N'}
+  }
+
+  function positionString(lat, lon, prefix){
+    prefix = prefix || '';
+    var lonO = formatLonString(lon);
+    var latO = formatLatString(lat);
+    var s = prefix + ' ';
+    s += latO.lat + latO.dir;
+    s += ',';
+    s += lonO.lon + lonO.dir;
+    return s;
+  }
 
   function getDateRange(start, end){
     start = new Date(start);
