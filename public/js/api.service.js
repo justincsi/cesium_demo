@@ -1,14 +1,21 @@
 var api = (function(){
   var data;
   return {
-    update: update,
-    getData: getData
+    getData: getData,
   }
 
-  function getData(){
-    return data;
+  function getData(lat, lon, param, start, end, units, aggregator){
+    return axios.all([cfsr(lat, lon, param, start, end, units, aggregator),
+              cfs(lat, lon, param, start, end, units, aggregator)])
+          .then(axios.spread(function(cfsrData, cfsData){
+              return {
+                cfsr: cfsrData,
+                cfs: cfsData
+              }
+          }))
   }
-  function update(lat, lon, param, start, end, units, aggregator){
+
+  function cfsr(lat, lon, param, start, end, units, aggregator){
       units = units || 'english';
       aggregator = aggregator || 'mean';
       return axios.get('/cfsr/daily', {
@@ -23,11 +30,33 @@ var api = (function(){
                         }
                       })
                       .then(function(response){
-                        data = response.data;
+                        return response.data;
                       })
                       .catch(function(err){
                         console.error(err);
                       })
+  }
+
+  function cfs(lat, lon, param, start, end, units, aggregator){
+    units = units || 'english';
+    aggregator = aggregator || 'mean';
+    return axios.get('/cfs/daily', {
+                      params: {
+                        lat: lat,
+                        lon: lon,
+                        parameter: param,
+                        start_date: getDateString(new Date(start)),
+                        end_date: getDateString(new Date(end)),
+                        units: units,
+                        aggregator: aggregator
+                      }
+                    })
+                    .then(function(response){
+                      return response.data;
+                    })
+                    .catch(function(err){
+                      console.error(err);
+                    })
   }
 
   function getDateString(date){
